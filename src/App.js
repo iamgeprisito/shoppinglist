@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import AddFoodItem from './components/AddFoodItem';
+import { CssBaseline, Container, Typography } from '@mui/material';
 
 function App() {
+  const [foodItems, setFoodItems] = useState([]);
+
+  const handleAddFoodItem = (foodItem) => {
+    setFoodItems([...foodItems, foodItem]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CssBaseline />
+      <Container maxWidth="md">
+        <AddFoodItem onAdd={handleAddFoodItem} />
+        <Typography variant="h4" gutterBottom>
+          Food Items
+        </Typography>
+        <ul>
+          {foodItems.map((foodItem, index) => (
+            <li key={index}>
+              {foodItem.name} - {foodItem.description} - ${foodItem.price}
+            </li>
+          ))}
+        </ul>
+      </Container>
     </div>
   );
 }
