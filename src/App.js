@@ -24,6 +24,7 @@ import AddFoodItem from './AddFoodItem';
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
+  const [foodItems, setFoodItems] = useState([]);
 
   useEffect(() => {
     fetchNotes();
@@ -61,7 +62,6 @@ const App = ({ signOut }) => {
     fetchNotes();
     event.target.reset();
   }
-  
 
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
@@ -73,6 +73,10 @@ const App = ({ signOut }) => {
     });
   }
 
+  function addFoodItem(newFoodItem) {
+    setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
+  }
+
   return (
     <View className="App">
       <Heading level={1}>My Notes App</Heading>
@@ -81,7 +85,31 @@ const App = ({ signOut }) => {
       </View>
       
       {/* Add the AddFoodItem component */}
-      <AddFoodItem />
+      <AddFoodItem onAddFoodItem={addFoodItem} />
+
+      <View margin="3rem 0">
+        {foodItems.map((item) => (
+          <Flex
+            key={item.name}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text as="strong" fontWeight={700}>
+              {item.name}
+            </Text>
+            <Text as="span">{item.description}</Text>
+            <Text as="span">${item.price}</Text>
+            {item.image && (
+              <Image
+                src={item.image}
+                alt={`visual aid for ${item.name}`}
+                style={{ width: 400 }}
+              />
+            )}
+          </Flex>
+        ))}
+      </View>
 
       <Button onClick={signOut}>Sign Out</Button>
     </View>

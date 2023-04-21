@@ -1,36 +1,58 @@
 import React from 'react';
 import './App.css';
 import { useState } from 'react';
+import { Storage } from 'aws-amplify';
 
-
-function AddFoodItem() {
+function AddFoodItem({ onAddFoodItem }) {
     const [foodItem, setFoodItem] = useState({
         name: '',
         description: '',
         price: '',
         image: '',
-      });
-    
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFoodItem((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      };
-    
-      const handleSubmit = (e) => {
+    });
+
+    const handleChange = (e) => {
+        const { name, value, type, files } = e.target;
+        if (type === 'file') {
+          setFoodItem((prevState) => ({
+            ...prevState,
+            [name]: files[0],
+          }));
+        } else {
+          setFoodItem((prevState) => ({
+            ...prevState,
+            [name]: value,
+          }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(foodItem);
+
+        let uploadedImageUrl;
+        if (foodItem.image) {
+          const { key } = await Storage.put(foodItem.image.name, foodItem.image);
+          uploadedImageUrl = await Storage.get(key);
+        }
+
+        const newFoodItem = {
+          name: foodItem.name,
+          description: foodItem.description,
+          price: foodItem.price,
+          image: uploadedImageUrl,
+        };
+
+        onAddFoodItem(newFoodItem);
+
         setFoodItem({
           name: '',
           description: '',
           price: '',
           image: '',
         });
-      };
+    };
 
-      return (
+    return (
         <div className="App">
           <h1>Add Food Item</h1>
           <form onSubmit={handleSubmit}>
@@ -68,7 +90,7 @@ function AddFoodItem() {
             <button type="submit">Submit</button>
           </form>
         </div>
-      );
+    );
 }
 
 export default AddFoodItem;
