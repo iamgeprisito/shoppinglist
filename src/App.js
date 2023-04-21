@@ -77,6 +77,12 @@ const App = ({ signOut }) => {
     setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
   }
 
+  function deleteFoodItem(index) {
+    setFoodItems(prevFoodItems => prevFoodItems.filter((_, i) => i !== index));
+  }
+
+  const totalPrice = foodItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+
   return (
     <View className="App">
       <Heading level={1}><b>Shopping List</b></Heading>
@@ -88,9 +94,9 @@ const App = ({ signOut }) => {
       <AddFoodItem onAddFoodItem={addFoodItem} />
 
       <View margin="3rem 0">
-        {foodItems.map((item) => (
+        {foodItems.map((item, index) => (
           <Flex
-            key={item.name}
+            key={`${item.name}-${index}`}
             direction="row"
             justifyContent="center"
             alignItems="center"
@@ -107,9 +113,12 @@ const App = ({ signOut }) => {
                 style={{ width: 400 }}
               />
             )}
+            <Button onClick={() => deleteFoodItem(index)}>Delete</Button>
           </Flex>
         ))}
       </View>
+      
+      <Text>Total Price: ${totalPrice}</Text>
 
       <Button onClick={signOut}>Sign Out</Button>
     </View>
@@ -117,3 +126,4 @@ const App = ({ signOut }) => {
 };
 
 export default withAuthenticator(App);
+
