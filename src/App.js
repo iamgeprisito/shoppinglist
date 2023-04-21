@@ -79,7 +79,7 @@ const App = ({ signOut }) => {
 
   return (
     <View className="App">
-      <Heading level={1}><b>My Shopping List</b></Heading>
+      <Heading level={1}><b>Shopping List</b></Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         {/* ... (the rest of the existing code in the first component) */}
       </View>
