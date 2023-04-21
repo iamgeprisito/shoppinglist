@@ -1,0 +1,14 @@
+{
+  "resourceName": "photostorage",
+  "policyUUID": "6726fad4",
+  "bucketName": "shoppinglist5b1a221716664911b1ed38d0050f01de",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
