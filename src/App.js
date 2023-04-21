@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import AddFoodItem from './components/AddFoodItem';
-import { CssBaseline, Container, Typography } from '@mui/material';
+import logo from "./logo.svg";
+import "@aws-amplify/ui-react/styles.css";
+import {
+  withAuthenticator,
+  Button,
+  Heading,
+  Image,
+  View,
+  Card,
+} from "@aws-amplify/ui-react";
 
-function App() {
-  const [foodItems, setFoodItems] = useState([]);
-
-  const handleAddFoodItem = (foodItem) => {
-    setFoodItems([...foodItems, foodItem]);
-  };
-
+function App({ signOut }) {
   return (
-    <div className="App">
-      <CssBaseline />
-      <Container maxWidth="md">
-        <AddFoodItem onAdd={handleAddFoodItem} />
-        <Typography variant="h4" gutterBottom>
-          Food Items
-        </Typography>
-        <ul>
-          {foodItems.map((foodItem, index) => (
-            <li key={index}>
-              {foodItem.name} - {foodItem.description} - ${foodItem.price}
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </div>
+    <View className="App">
+      <Card>
+        <Image src={logo} className="App-logo" alt="logo" />
+        <Heading level={1}>We now have Auth!</Heading>
+      </Card>
+      <Button onClick={signOut}>Sign Out</Button>
+    </View>
   );
 }
 
-export default App;
+export default withAuthenticator(App);
